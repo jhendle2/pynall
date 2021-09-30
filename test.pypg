@@ -1,0 +1,4 @@
+page:
+    block(x=1, y=2):
+        paragraph:
+            'Hello, World!'
