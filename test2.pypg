@@ -1,0 +1,10 @@
+page:
+    block(x=1, y=2):
+        paragraph:
+            'Block 1 Paragraph 1'
+        paragraph:
+            'Block 1 Paragraph 2'
+
+    block:
+        paragraph:
+            'Block 2 Paragraph 1'

@@ -1,64 +1,108 @@
-tag_lookup = {
-    'page': 'html',
-    'block': 'div',
-    'table': 'table',
-    'paragraph': 'p',
-    'header': 'h',
-}
+
+def args_str_to_dict(args_str):
+    args_dict = {}
+    if ',' not in args_str:
+        args_dict = args_str
+        return args_dict
+
+    args_list = args_str.replace(', ', ',').split(',')
+    for arg in args_list:
+        if '=' in arg:
+            name, value = arg.split('=')
+            name = name.lstrip().rstrip()
+            value = value.lstrip().rstrip()
+            args_dict[name] = value
+    return args_dict
 
 
-class Tag:
+def line_to_tag_args(line):
+    tag = line
+    args = {}
+    if line[-1] == ':':
+        line = line[:-1]
+        tag = line
 
-    def __init__(self, name='', bonus=0):
-        self.name = name
-        self.bonus = bonus  # How changes in level it is from the previous tag
+    if '(' in line:
+        paren_index = line.find('(')
+        tag = line[:paren_index]
+        line = line[paren_index:]
+        if line[-1] == ')':
+            args_str = line[1:-1]
+            args = args_str_to_dict(args_str)
 
-    def __repr__(self):
-        return self.name
-
-    def bonus(self):
-        return self.bonus
-
-    def get_html_eq(self):
-        return tag_lookup[self.name]
-
-
-class Style:
-    def __init__(self, **kwargs):
-        self.source = ''  # Could be a source file
-        for kw in kwargs:
-            setattr(self, kw, kwargs[kw])
+    return tag, args
 
 
-class Layout:
-    """
-    Description: A object which will correspond to
-    HTML style tags.
-    """
+class Node(dict):
+    def __init__(self, tag, args, is_content):
+        self._parent = None  # pointer to parent Node
+        self['tag'] = tag
+        self['content'] = ''  # keep reference to id #
+        self['children'] = [] # collection of pointers to child Nodes
+        self['is_content'] = is_content
+        self['args'] = args
 
-    def __init__(self, **kwargs):
-        self.tag : Tag = None
-        self.children = []
-        self.style : Style = None
-        self.lclass = None
-        self.content = None  # Usually just a String
+    @property
+    def parent(self):
+        return self._parent  # simply return the object at the _parent pointer
 
-        for kw in kwargs:
-            setattr(self, kw, kwargs[kw])
+    @property
+    def has_children(self):
+        return len(self['children']) > 0
 
-    def __repr__(self):
-        str_out = ''
-        str_out += str(self.tag)
-        return str_out
+    @parent.setter
+    def parent(self, node):
+        self._parent = node
+        # add this node to parent's list of children
+        node['children'].append(self)
 
-    def props(self):
-        return [prop for prop in self.__dict__]
 
-    def add_child(self, child):
-        self.children.append(child)
+def tag_args_to_node(tag_args, is_content):
+    temp = Node(tag_args[0], tag_args[1], is_content)
+    return temp
+
+
+def build_layout_tree(tups):
+    # parent, last_level = tups.pop(0)
+    parent, last_level = Node('pypg', None, False), 0
+    if last_level != 0:
+        raise Exception('No parent node')
+
+    tree = parent # tag_args_to_node(line_to_tag_args(parent), False)
+    # tree = Node(parent)
+    last_node = tree
+    for line, level in tups:
+        tag, args = line_to_tag_args(line)
+        is_content = tag == line
+
+        if level > last_level:
+            child_node = Node(tag, args, is_content)
+            child_node.parent = last_node
+            last_node = child_node
+            last_level = level
+        elif level == last_level:
+            print('==')
+            child_node = Node(tag, args, is_content)
+            child_node.parent = last_node.parent
+            last_node = child_node
+            last_level = level
+        else:
+            while level <= last_level:
+                last_node = last_node.parent
+                last_level -= 1
+            child_node = Node(tag, args, is_content)
+            child_node.parent = last_node
+            last_node = child_node
+            last_level = level
+    return tree
+
+
+def dump_tree_as_json(tree):
+    import json
+    return json.dumps(tree, indent=4)
 
 
 if __name__ == '__main__':
-    layout = Layout(tag='test')
-    print(layout.props())
-    print(layout.tag)
+    line1 = "block(arg1=test1, arg2=test2):"
+    parsed1 = line_to_tag_args(line1)
+    print(parsed1)
