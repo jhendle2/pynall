@@ -1,6 +1,5 @@
 from html_converter import *
 from css_converter import *
-from py_converter import *
 from file_opener_2 import *
 
 import sys
@@ -23,33 +22,45 @@ if __name__ == '__main__':
     parser.add_argument("-o", "--outfile", help="file to be written to")
     args = parser.parse_args()
     if args.infile:
+        # Parse the infile/outfile name
         infile = args.infile
         outfile = infile.replace('.pypg','')  # + '.html'
         if args.outfile:
             outfile = args.outfile
         logging.info(f'Infile={infile}')
 
-        ls = open_file_as_lines('test.pypg')
+        # Isolate our three sections
+        ls = open_file_as_lines('../test.pypg')
+        layout_section = isolate_layout(ls)
+        styles_section = isolate_styles(ls)
+        scripts_section = isolate_scripts(ls)
+
+        # Style processing
+        style_levels = count_levels(styles_section)
+        style_tree = layout.build_layout_tree()
+
+        # Layout processing
         lc = count_levels(ls)
         lt = layout.build_layout_tree(lc)['children']
         lthtml, ltcss, ltscript = None, None, None
         for lti in lt:
             if lti['tag'] == 'page':
                 lthtml = lti
-            elif lti['tag'] == 'style':
+            elif lti['tag'] == 'styles':
                 ltcss = lti
-            elif lti['tag'] == 'script':
+            elif lti['tag'] == 'scripts':
                 ltscript = lti
         # ljson = layout.dump_tree_as_json(lt)
         # with open('test.json', 'w+') as outfile1:
         #     outfile1.write(ljson)
+
         html_str = dump_tree_as_html(lthtml)
         css_str = dump_tree_as_css(ltcss)
-        py_str = dump_tree_as_py(ltscript)
+        # py_str = dump_tree_as_py(ltscript)
 
         html_dir = outfile+'.html'
         css_dir = outfile+'.css'
-        py_dir = outfile+'.py'
+        # py_dir = outfile+'.py'
 
         with open(html_dir, 'w+') as html_out:
             logging.info(f'Outputting html source to {html_dir}')

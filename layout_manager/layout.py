@@ -1,4 +1,14 @@
 
+def repair_strings(line):
+    line = line.lstrip().rstrip()
+    if line[0:3] == "'''" or line[0:3] == '"""':
+        line = line[3:]
+    elif (line[0] == '\'' and line[-1] == '\'') or \
+            (line[0] == '\"' and line[-1] == '\"'):
+        line = line[1:-1]
+    return line
+
+
 def args_str_to_dict(args_str):
     args_dict = {}
     if ',' not in args_str:
@@ -50,6 +60,9 @@ class Node(dict):
     def has_children(self):
         return len(self['children']) > 0
 
+    def has(self, key):
+        return key in self['args'].keys()
+
     @parent.setter
     def parent(self, node):
         self._parent = node
@@ -68,12 +81,16 @@ def build_layout_tree(tups):
     if last_level != 0:
         raise Exception('No parent node')
 
-    tree = parent # tag_args_to_node(line_to_tag_args(parent), False)
+    tree = parent  # tag_args_to_node(line_to_tag_args(parent), False)
     # tree = Node(parent)
     last_node = tree
     for line, level in tups:
         tag, args = line_to_tag_args(line)
         is_content = tag == line
+        if is_content:
+            tag = repair_strings(tag)
+            if tag == '':
+                continue
 
         if level > last_level:
             child_node = Node(tag, args, is_content)
@@ -81,7 +98,6 @@ def build_layout_tree(tups):
             last_node = child_node
             last_level = level
         elif level == last_level:
-            print('==')
             child_node = Node(tag, args, is_content)
             child_node.parent = last_node.parent
             last_node = child_node

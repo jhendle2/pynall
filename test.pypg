@@ -1,20 +1,39 @@
 from std_layout import button
 
-page:
-    block(x=1, y=2):
-        header(1):
-            'Block 1 Paragraph 1'
+page():
+    block():
+        title():
+            'Test Page' # with a comment
         header(2):
-            'Block 1 Paragraph 2'
-        button(onclick=func1)
+            'Welcome to my test page!'
+        paragraph():
+            '''
+            This is a test page to
+            test my PyPg interpreter.
+            '''
+        link(text='Click here for more info!', path='test_out.html')
+        paragraph():
+            'Look, even line\nbreaks work!'
+        image(source='src/images/cat.png', hover='a fluffy cat!', height=default, width=default)
+        button(type="submit", name="button1", value="func1")
+    block():
+        block():
+            paragraph():
+                'A'
+        block():
+            paragraph():
+                'B'
 
-    block:
-        header(3):
-            'Block 2 Paragraph 1'
 
-style:
-    pass
+styles():
+    style_a = Style(color=style.red, align=style.center, font_size=14)
 
-script:
+    style_b = Style(color=style.blue, align=style.left, font=fonts.Arial_Bold)
+
+
+scripts():
     def func1():
         print('Hello World')
+
+    def func2():
+        print('Goodbye World')

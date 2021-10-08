@@ -50,3 +50,29 @@ def count_levels(lines_in):
         lines_out.append((line, level))
     return lines_out
 
+
+def isolate(lines, switch_on, switch_off):
+    isolated_lines = [switch_on]
+    switch = False
+    for line in lines:
+        if switch:
+            isolated_lines.append(line)
+        if line.replace('()', '') == switch_on:
+            switch = True
+        elif line.replace('()', '') in switch_off:
+            switch = False
+    return isolated_lines
+
+
+def isolate_layout(lines):
+    return isolate(lines,'page:', ['styles:', 'scripts:'])
+
+
+def isolate_styles(lines):
+    return isolate(lines, 'styles:', ['page:', 'scripts:'])
+
+
+def isolate_scripts(lines):
+    return isolate(lines, 'scripts:', ['styles:', 'page:'])
+
+
