@@ -15,6 +15,14 @@ python pynall.py test
 
 # Changelog
 
+## Version 0.0.3 (10/7/2021):
+
+---
+* Refactored a bunch of code
+* Broke the HTML converter ;.(
+* But, a Flask app can now succesfully import scripts
+and their functions put inside a .pypg file so that's cool.
+
 ## Version 0.0.2 (10/6/2021):
 
 ---
