@@ -3,8 +3,9 @@ def line():
 
 
 def print_header(*args):
-    line()
+    print()
     for a in args:
         print(a, end='')
     print()
+    line()
 

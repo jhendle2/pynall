@@ -69,17 +69,38 @@ def create_project_directory(filename):
     print('(Y)es/(N)o: ', end='')
     choice = str(input()).lower()
     if 'y' in choice:
-        return filename
+        return 'src/' + filename.replace('.pypg', '')
     else:
         return new_directory_name()
 
 
-def process_file(filename):
+def process_file(filename, project_directory_name):
     print_header(f'Processing "{filename}"')
 
-    # scripts_data = process_scripts(filename)
-    # styles_data = process_styles(filename)
-    # layout_data = process_layout(filename, scripts_data, styles_data)
+    file_as_lines = read_file_as_lines(infile)
+    print('(1/3)', end=' ')
+    scripts_data = process_scripts(filename, file_as_lines, project_directory_name)
+    # styles_data = process_styles(file_as_lines)
+    # layout_data = process_layout(file_as_lines, scripts_data, styles_data)
+
+
+def setup_project_directory(args_in, filename):
+    project_directory_name = ''
+    if args_in.outfile:
+        project_directory_name = 'src/' + args_in.outfile
+    else:
+        project_directory_name = create_project_directory(infile)
+
+    try:
+        os.mkdir(project_directory_name)
+        print(f'Created directory "{project_directory_name}/"')
+    except FileExistsError:
+        print(f'Directory "{project_directory_name}/" already exists!')
+    except Exception:
+        print('ERROR: Unknown exception has occurred!')
+        sys.exit(1)
+
+    return project_directory_name
 
 
 if __name__ == '__main__':
@@ -95,30 +116,20 @@ if __name__ == '__main__':
     parser.add_argument("-P", "--scripts", help="output scripts (.py)", action='store_true')
     args = parser.parse_args()
 
-    infile = ''
     try:
+        infile = ''
         if not args.infile:
             infile = get_source_name()
-        if args.infile:
-
+        else:
             # Parse the infile/outfile name
             infile = args.infile
-            print(f'Source file selected: "{infile}"')
-            # outfile = infile.replace('.pypg', '') if not args.outfile else args.outfile
 
-            project_directory_name = ''
-            if args.outfile:
-                project_directory_name = args.outfile
-            else:
-                project_directory_name = create_project_directory(infile)
+        print(f'Source file selected: "{infile}"')
+        # outfile = infile.replace('.pypg', '') if not args.outfile else args.outfile
 
-            try:
-                os.mkdir('src/'+project_directory_name)
-                print(f'Created directory "{project_directory_name}/"')
-            except FileExistsError:
-                print(f'Directory "{project_directory_name}/" already exists!')
+        directory_name = setup_project_directory(args, infile)
 
-            process_file(infile)
+        process_file(infile, directory_name)
     except KeyboardInterrupt:
         print()
         line()

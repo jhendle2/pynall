@@ -27,6 +27,16 @@ def replace_tabs(line):
     return line
 
 
+def shift_left_one_tab(line):
+    tab_length = len(TAB)
+    if len(line) > tab_length:
+        if line[:tab_length] == TAB:
+            line = line[tab_length:]
+    # if len(line) > 1 and TAB in line[-2:]:
+    #     return line[:-2]
+    return line
+
+
 def repair_strings(lines):
     return lines
 

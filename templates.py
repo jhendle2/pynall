@@ -23,3 +23,13 @@ scripts():
         print(\'Hello, World!\')
 
 '''
+
+bare_template = '''layout():
+    pass
+
+styles():
+    pass
+
+scripts():
+    pass
+'''
