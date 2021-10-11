@@ -14,8 +14,8 @@ page():
         link(text='Click here for more info!', path='test_out.html')
         paragraph():
             'Look, even line\nbreaks work!'
-        image(source='src/images/cat.png', hover='a fluffy cat!', height=default, width=default)
-        button(type="submit", name="button1", value="func1")
+        image(source='static/images/cat.png', hover='a fluffy cat!', height=default, width=default)
+        button(type="submit", name="button1", value=func2())
     block():
         block():
             paragraph():

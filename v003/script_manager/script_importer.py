@@ -22,6 +22,10 @@ def load_script(filename, script_as_lines):
     return None
 
 
+def get_funcs(import_obj):
+    return import_obj.__dict__
+
+
 def get_func(import_obj, func_name):
     """
     Gets a function from an import module

@@ -1,7 +1,7 @@
-from utils.file_opener import *
-from script_manager import script_importer
-from layout_manager.layout import build_layout_tree
-from layout_manager.html_converter import dump_tree_as_html
+from v003.utils.file_opener import *
+from v003.script_manager import script_importer
+from v003.layout_manager.layout import build_layout_tree
+from v003.layout_manager.html_converter import dump_tree_as_html
 
 import sys
 import logging
@@ -47,34 +47,36 @@ if __name__ == '__main__':
 
         if scripts_switch:
             scripts_section = isolate_scripts(file_as_lines)
+            print(scripts_section)
             scripts_section = remove_one_tab(scripts_section)
-            # scripts_section = count_levels(file_as_lines)
             script_obj = script_importer.load_script(scripts_outfile, scripts_section)
-            # if script_obj is not None:
-            #     script_obj.func1()
-
         # if styles_switch:
         #     styles_section = isolate_styles(file_as_lines)
         #     styles_levels = count_levels(styles_section)
         #     print(styles_levels)
 
-        #TODO: FIX
-        # if layout_switch:
-        #     layout_section = isolate_layout(file_as_lines)
-        #     print(layout_section)
-        #     layout_levels = count_levels(layout_section)
-        #     layout_tree = build_layout_tree(layout_levels)
-        #
-        #     print(layout_tree)
-        #
-        #     html_str = dump_tree_as_html(layout_tree)
-        #     html_dir = 'templates/' + outfile + '.html'
-        #
-        #     with open(html_dir, 'w+') as html_out:
-        #         logging.info(f'Outputting html source to {html_dir}')
-        #         html_out.write(html_str)
+        pages = {}
+        if layout_switch:
+            layout_section = isolate_layout(file_as_lines)
+            print(layout_section)
+            layout_levels = count_levels(layout_section)
+            # print(layout_levels)
+            layout_tree = build_layout_tree(layout_levels)
+            # print(layout_tree)
 
-        app.run_flask(script_obj)
+            html_str = dump_tree_as_html(layout_tree)
+            # print(html_str)
+
+            html_dir = outfile + '.html'
+
+            with open('templates/' + html_dir, 'w+') as html_out:
+                logging.info(f'Outputting html source to templates/{html_dir}')
+                html_out.write(html_str)
+                html_out.close()
+
+            pages['index'] = html_dir
+
+        app.run_flask(pages, script_obj)
 
 
     else:

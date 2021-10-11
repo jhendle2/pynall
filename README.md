@@ -1,7 +1,7 @@
-# PyNaLL
-PyNaLL, or "Python's Not A Layout Language", is a Python based 
+# Lasso
+Lasso, (formerly PyNaLL, or "Python's Not A Layout Language"), is a Python based 
 interpreter which allows for rapid prototyping of webpages
-using a Python styled markdown language. PyNaLL supports both
+using a Python styled markdown language. Lasso supports both
 frontend development and an automatic connection to a
 Python backend framework.
 
@@ -9,11 +9,19 @@ Python backend framework.
 ```
 git clone github.com/jhendle2/pynall
 cd to/pynall/directory
-# python setup.py install # Not used (yet)
-python pynall.py test
+# python setup.py install # Not used (yet??)
+python main.py # To create a new project or
+# python main.py test # To create a test project
 ```
 
 # Changelog
+
+## Version 0.0.4 (10/11/2021):
+
+---
+* Complete refactor of code. All old code moved to v002 and v003 folders
+* Built-in project setup when no file-in / file-out args are passed
+  * Helpful templates added for newbies
 
 ## Version 0.0.3 (10/7/2021):
 

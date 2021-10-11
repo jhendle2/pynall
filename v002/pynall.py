@@ -30,7 +30,7 @@ if __name__ == '__main__':
         logging.info(f'Infile={infile}')
 
         # Isolate our three sections
-        ls = open_file_as_lines('../test.pypg')
+        ls = open_file_as_lines('../v003/test.pypg')
         layout_section = isolate_layout(ls)
         styles_section = isolate_styles(ls)
         scripts_section = isolate_scripts(ls)

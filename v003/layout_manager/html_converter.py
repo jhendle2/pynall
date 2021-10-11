@@ -1,6 +1,6 @@
 
 TAGS = {
-    'pypg': 'html',
+    'pypg': '',
     'page': 'html',
     'block': 'div',
     'paragraph': 'p',
@@ -24,6 +24,10 @@ def tag_to_html(tag):
 def build_single_line(tree):
     tag = tree['tag']
     args = tree['args']
+    if tag == 'pypg':
+        # print('here')
+        return ''
+
     if tag == 'link':
         text = args['text'] if tree.has('text') else ''
         path = args['path'] if tree.has('path') else ''
@@ -40,7 +44,36 @@ def build_single_line(tree):
         # height = 'height='+str(args['height']) if tree.has('height') else ''
         # width = 'width='+str(args['width']) if tree.has('width') else ''
         return f'<img src={source} alt={hover} {height} {width}/>'
+    elif tag == 'button':
+        # print('args=', args)
+        button_type, button_id, button_path, button_text = 'submit', 'button1', '', ''
+        if 'type' in args.keys():
+            button_type = args['type'].replace('\'', '').replace('"', '')
 
+        if 'id' in args.keys():
+            button_id = args['id'].replace('\'', '').replace('"', '')
+
+        if 'path' in args.keys():
+            button_path = args['path'].replace('\'', '').replace('"', '')
+
+        if 'text' in args.keys():
+            button_text = args['text'].replace('\'', '').replace('"', '')
+
+        if '(' in button_path and ')' in button_path:
+            button_path = button_path.replace('(', '').replace(')', '')
+
+        # print(button_path, button_text, button_id, button_type)
+        str_out = '<form action="/index_data" method="POST">'
+        str_out += f'<input type="{button_type}" name="{button_id}" value="{button_path}">'
+        str_out += '</form>'
+        return str_out
+    else:
+        if tag not in TAGS:
+            return tag
+        else:
+            html_tag = tag_to_html(tag)
+            content = tree['content']
+            return f'<{html_tag}>{content}</{html_tag}>'
     return ''
 
 
@@ -60,12 +93,14 @@ def dump_tree_as_html(tree):
     if tree.has_children:
         open_tag = '<' + html_tag + level + '>'
         close_tag = '</' + html_tag + level + '>'
-        str_out += open_tag + '\n'
+        if tag != 'pypg':
+            str_out += open_tag + '\n'
         for child in tree['children']:
             tree_dump = dump_tree_as_html(child)
             if tree_dump is not None:
                 str_out += tree_dump + '\n'
-        str_out += close_tag
+        if tag != 'pypg':
+            str_out += close_tag
     else:
         single_line = build_single_line(tree)
         str_out += single_line

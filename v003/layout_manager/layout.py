@@ -1,6 +1,10 @@
 
 def repair_strings(line):
     line = line.lstrip().rstrip()
+    # print('line=',line)
+    if line == '':
+        return ''
+
     if line[0:3] == "'''" or line[0:3] == '"""':
         line = line[3:]
     elif (line[0] == '\'' and line[-1] == '\'') or \
@@ -28,6 +32,7 @@ def args_str_to_dict(args_str):
 def line_to_tag_args(line):
     tag = line
     args = {}
+
     if line[-1] == ':':
         line = line[:-1]
         tag = line
@@ -85,6 +90,8 @@ def build_layout_tree(tups):
     # tree = Node(parent)
     last_node = tree
     for line, level in tups:
+        if line == '':
+            continue
         tag, args = line_to_tag_args(line)
         is_content = tag == line
         if is_content:

@@ -23,6 +23,15 @@ def remove_newlines(line):
     return line
 
 
+def replace_tabs(line):
+    if len(line) == 0:
+        return ''
+
+    if line[0] == '\t':
+        line = line.replace('\t', TAB_CHAR)
+    return line
+
+
 def open_file_as_lines(filename):
     with open(filename) as file:
         file_lines = []
@@ -32,6 +41,7 @@ def open_file_as_lines(filename):
 
             line = remove_comments(line)
             line = remove_newlines(line)
+            line = replace_tabs(line)
             if line != '':
                 file_lines.append(line)
         return file_lines
@@ -55,17 +65,18 @@ def isolate(lines, switch_on, switch_off):
     isolated_lines = [switch_on]
     switch = False
     for line in lines:
-        if switch:
-            isolated_lines.append(line)
         if line.replace('()', '') == switch_on:
             switch = True
         elif line.replace('()', '') in switch_off:
             switch = False
+        if switch:
+            isolated_lines.append(line)
+
     return isolated_lines
 
 
 def isolate_layout(lines):
-    layout_lines = isolate(lines,'page', ['styles', 'scripts'])
+    layout_lines = isolate(lines, 'page', ['styles', 'scripts'])
     if layout_lines[-1] == 'styles():' or layout_lines[-1] == 'styles:':
         layout_lines = layout_lines[:-1]
     return layout_lines
