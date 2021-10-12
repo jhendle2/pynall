@@ -1,0 +1,75 @@
+{
+  "tag": "layout",
+  "is_content": false,
+  "content": "",
+  "args": {},
+  "children": [
+    {
+      "tag": "block",
+      "is_content": false,
+      "content": "",
+      "args": {},
+      "children": [
+        {
+          "tag": "header1",
+          "is_content": false,
+          "content": "",
+          "args": {},
+          "children": [
+            {
+              "tag": "",
+              "is_content": true,
+              "content": "'Welcome to my Page!'",
+              "args": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "header2",
+          "is_content": false,
+          "content": "",
+          "args": {},
+          "children": [
+            {
+              "tag": "",
+              "is_content": true,
+              "content": "\"By Jonah Hendler\"",
+              "args": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "paragraph",
+          "is_content": false,
+          "content": "",
+          "args": {},
+          "children": [
+            {
+              "tag": "",
+              "is_content": true,
+              "content": "'''Hello, World!'''",
+              "args": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "button",
+          "is_content": false,
+          "content": "",
+          "args": {
+            "onclick": {
+              "arg_keyword": "onclick",
+              "arg_type": "function",
+              "arg_value": "function_1",
+              "arg_kwargs": "x=1, y='hello'"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

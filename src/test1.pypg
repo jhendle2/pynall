@@ -1,0 +1,31 @@
+# This is a test file written in PaSS, a Python markdown language.
+# Pass files contain three sections:
+# - Layout (or Page) - converted to HTML code for page layout purposes
+# - Styles - converted to CSS code for style purposes
+# - Source (or Scripts) - interpreted as Python directly
+
+layout():
+	block():
+		header1():
+			'Welcome to my Page!'
+
+		header2():
+			"By Jonah Hendler"
+
+		paragraph():
+			'''
+			Hello, World!
+			'''
+		
+		button(onclick=function_1(x=1, y='hello'))
+
+styles():
+	pass
+
+
+scripts():
+	def function_1():
+		print('Hello, World!')
+
+	def function_2():
+	    print('Goodbye, World!')

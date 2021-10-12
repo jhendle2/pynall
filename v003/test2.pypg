@@ -1,0 +1,15 @@
+
+page():
+	block():
+		header(1):
+			'Test Page 2'
+		header(2):
+			'Designed by:'
+		link(text='Jonah Hendler', path='mailto:jonahhendler@outlook.com')
+	
+	block():
+		button(id='button1', text='I\'m a Button!', path=test_function())
+
+scripts():
+	def test_function():
+		print('This is a test function!')

@@ -1,0 +1,20 @@
+from std_layout import button
+
+page:
+    block(x=1, y=2):
+        header(1):
+            'Block 1 Paragraph 1'
+        header(2):
+            'Block 1 Paragraph 2'
+        button(onclick=func1)
+
+    block:
+        header(3):
+            'Block 2 Paragraph 1'
+
+style:
+    pass
+
+script:
+    def func1():
+        print('Hello World')
