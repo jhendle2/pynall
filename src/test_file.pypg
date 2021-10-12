@@ -9,7 +9,9 @@
 layout(title='Hello World Page'):
     block():
         paragraph(style=cool_style):
-            'Hello World!'
+            '''
+            Hello World!
+            '''
             
         button(onclick=helloWorld())
 

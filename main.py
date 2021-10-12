@@ -8,7 +8,7 @@ from layout_handler import process_layout
 from styles_handler import process_styles
 from scripts_handler import process_scripts
 
-from general_utils import line, print_header
+from general_utils import line, nline, print_header
 
 __app__ = 'Lasso'
 __author__ = 'The Lasso Team'
@@ -78,10 +78,15 @@ def process_file(filename, project_directory_name):
     print_header(f'Processing "{filename}"')
 
     file_as_lines = read_file_as_lines(infile)
-    print('(1/3)', end=' ')
-    scripts_data = process_scripts(filename, file_as_lines, project_directory_name)
-    # styles_data = process_styles(file_as_lines)
-    # layout_data = process_layout(file_as_lines, scripts_data, styles_data)
+    # print('(1/3)', end=' ')
+    # scripts = process_scripts(filename, file_as_lines, project_directory_name)
+
+    # print('(2/3)', end=' ')
+    # styles = process_styles(file_as_lines)
+
+    nline()
+    print('(3/3)', end=' ')
+    process_layout(filename, file_as_lines, project_directory_name)
 
 
 def setup_project_directory(args_in, filename):
@@ -128,8 +133,9 @@ if __name__ == '__main__':
         # outfile = infile.replace('.pypg', '') if not args.outfile else args.outfile
 
         directory_name = setup_project_directory(args, infile)
-
         process_file(infile, directory_name)
+        # run_project()
+
     except KeyboardInterrupt:
         print()
         line()

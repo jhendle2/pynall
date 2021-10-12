@@ -6,9 +6,18 @@
 
 layout():
 	block():
-		paragraph():
-			'Hello, World!'
+		header1():
+			'Welcome to my Page!'
 
+		header2():
+			"By Jonah Hendler"
+
+		paragraph():
+			'''
+			Hello, World!
+			'''
+		
+		button(onclick=function_1(x=1, y='hello'))
 
 styles():
 	pass

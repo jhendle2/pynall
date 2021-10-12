@@ -1,2 +1,2 @@
-def process_styles():
+def process_styles(file_as_lines):
     pass

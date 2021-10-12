@@ -11,10 +11,28 @@ git clone github.com/jhendle2/pynall
 cd to/pynall/directory
 # python setup.py install # Not used (yet??)
 python main.py # To create a new project or
-# python main.py test # To create a test project
+python main.py -i src/test1.pypg -a -o test_file # To run the test file I included
+# python main.py test # To run a test project
 ```
 
 # Changelog
+
+## Version 0.0.5 (10/12/2021):
+
+---
+**MAJOR OVERHAUL!!**
+* Continued work with project directory system
+* Scripts handler successfully imports scripts
+  * Places temporary scripts file in project directory
+* Layout handler successfully builds layout tree
+  * Respects function arguments as well (this was agonizing to code)
+  as well as some recursive function arguments (up to one layer)
+* Code now successfully outputs HTML code
+  * Only open/close tags, currently. Still a WIP
+  * Debug variable in `debugs.py` for enabling interim
+  JSON code output --> lets you see the structure
+  of your files before HTML conversion
+* Code is looking handsome as ever
 
 ## Version 0.0.4 (10/11/2021):
 
